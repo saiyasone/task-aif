@@ -7,8 +7,10 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "ui:add": "npx shadcn@latest add"
+    "preview": "vite preview --host",
+    "ui:add": "npx shadcn@latest add",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.3.2",
