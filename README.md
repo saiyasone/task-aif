@@ -34,6 +34,12 @@ task-aif/
 
 ## 🚀 Getting Started
 
+### Notes:
+
+```bash
+Nodejs v20++
+```
+
 ### Step 1: Clone the repository
 
 ```bash
