@@ -1,11 +1,18 @@
 import axios from "axios";
 import { API_ENDPOINT } from "@/main";
 import type { IApiTodoResponse } from "@/models/api-response.model";
-import type { ITodoInput } from "@/models/todo.model";
+import type { ITodo, ITodoInput } from "@/models/todo.model";
 
 export const todoApi = {
   async getAllTodos(url: string): Promise<IApiTodoResponse> {
     const response = await axios.get<IApiTodoResponse>(`${url}`);
+
+    const data = await response.data;
+    return data;
+  },
+
+  async getTodo(id: string): Promise<ITodo> {
+    const response = await axios.get<ITodo>(`${API_ENDPOINT}/todo/${id}`);
 
     const data = await response.data;
     return data;

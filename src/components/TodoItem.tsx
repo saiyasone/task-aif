@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import type { ITodo } from "../models/todo.model";
 import { Check, Clock, Edit2, Trash2, User } from "lucide-react";
 import { Card, CardContent } from "./ui/card";
@@ -13,13 +13,20 @@ type Prop = {
 };
 function TodoItem(props: Prop) {
   const { todo, isLoading } = props;
+  const [isHover, setIsHover] = useState(false);
 
   const menuOnClick = (action: string) => {
     props.onClick?.(action);
   };
 
+  const handleOnHover = () => setIsHover(!isHover);
+
   return (
-    <Card className={`transition-all ${todo.completed ? "opacity-75" : ""}`}>
+    <Card
+      onMouseEnter={handleOnHover}
+      onMouseLeave={handleOnHover}
+      className={`transition-all ${todo.completed ? "opacity-75" : ""}`}
+    >
       <CardContent className="p-4">
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-start gap-3 flex-1">
@@ -71,7 +78,11 @@ function TodoItem(props: Prop) {
             </div>
           </div>
 
-          <div className="flex gap-1">
+          <div
+            className={`items-center gap-1 duration-[200ms] ease-in transition-all ${
+              isHover ? "opacity-100" : "opacity-0"
+            }`}
+          >
             <Button
               size="sm"
               variant="ghost"

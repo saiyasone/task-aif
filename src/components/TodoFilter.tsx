@@ -60,7 +60,7 @@ function TodoFilter({ users, filter }: Prop) {
                 className="cursor-pointer"
               >
                 <X />
-                Clear filters
+                <span className="hidden sm:block">Clear filters</span>
               </Button>
             )}
           </CardTitle>

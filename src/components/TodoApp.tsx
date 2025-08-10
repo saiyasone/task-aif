@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { act, Fragment, useEffect, useState } from "react";
 import TodoItem from "./TodoItem";
 import TodoFilter from "./TodoFilter";
 import { Button } from "./ui/button";
@@ -55,6 +55,20 @@ const TodoApp = () => {
     } finally {
       handleResetDataEvent();
       setIsTodo(false);
+    }
+  };
+
+  const handleOnFetchDataById = async (id: string, action: string) => {
+    try {
+      const response = await todoApi.getTodo(id);
+      console.log(response);
+
+      setDataForEvent({
+        action,
+        data: response,
+      });
+    } catch (error: any) {
+      toast.error(error?.message || "Failed to fetch todo by ID");
     }
   };
 
@@ -136,10 +150,7 @@ const TodoApp = () => {
                   isLoading={isTodo}
                   todo={todo}
                   onClick={(action: string) => {
-                    setDataForEvent({
-                      action,
-                      data: todo,
-                    });
+                    handleOnFetchDataById(todo.id, action);
                   }}
                 />
               ))}
