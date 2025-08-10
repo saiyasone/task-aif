@@ -4,6 +4,9 @@ import { useMemo, useReducer } from "react";
 const initialValues: TodoStateFilter = {
   limit: 10,
   page: 1,
+  search: "",
+  status: "",
+  userId: "",
 };
 
 const ACTION_TYPE = {
@@ -19,9 +22,13 @@ const reducer = (state: TodoStateFilter, action: any): TodoStateFilter => {
     case ACTION_TYPE.SET_SEARCH:
       return { ...state, search: action.payload };
     case ACTION_TYPE.SET_USER_ID:
-      return { ...state, userId: action.payload };
+      // console.log(action.payload);
+      return { ...state, userId: String(action.payload) };
     case ACTION_TYPE.SET_STATUS:
-      return { ...state, status: action.payload };
+      const payload = action.payload === "all" ? "" : action.payload;
+      return { ...state, status: payload };
+    case ACTION_TYPE.SET_LIMIT:
+      return { ...state, limit: action.payload };
     default:
       return state;
   }

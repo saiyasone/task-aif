@@ -14,9 +14,13 @@ import { TodoStatusItems } from "@/constants/menuItems";
 import useFilter from "@/hook/useFilter";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
+import type { IUser } from "@/models/user.model";
 
-function TodoFilter() {
-  const filter = useFilter();
+type Prop = {
+  users: IUser[];
+  filter: ReturnType<typeof useFilter>;
+};
+function TodoFilter({ users, filter }: Prop) {
   const { search, status, userId } = filter.data;
 
   const handleClearFilters = () => {
@@ -104,7 +108,7 @@ function TodoFilter() {
               onValueChange={(value: string) => {
                 filter.dispatch({
                   type: filter.action.SET_USER_ID,
-                  payload: value,
+                  payload: value === "all" ? "" : value,
                 });
               }}
             >
@@ -113,9 +117,9 @@ function TodoFilter() {
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="all">All Users</SelectItem>
-                {["1", "2", "3"].map((userId) => (
-                  <SelectItem key={userId} value={userId.toString()}>
-                    User {userId}
+                {users.map((user, index) => (
+                  <SelectItem key={index} value={user.id.toString()}>
+                    User - ({user.id})
                   </SelectItem>
                 ))}
               </SelectContent>

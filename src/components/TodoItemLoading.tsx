@@ -8,8 +8,8 @@ function TodoItemLoading() {
       {Array.from({ length: 3 }).map((_, index) => (
         <Card key={index}>
           <CardHeader>
-            <div className="flex items-center gap-4">
-              <Skeleton className="w-[30px] h-4 rounded-sm" />
+            <div className="flex items-center gap-3">
+              <Skeleton  className="w-[30px] h-[30px] rounded-full" />
               <Skeleton className="w-[200px] sm:w-[400px] h-4 rounded-sm" />
             </div>
 

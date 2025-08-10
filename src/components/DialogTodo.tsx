@@ -15,6 +15,7 @@ import {
 } from "./ui/select";
 import { Input } from "./ui/input";
 import { cn } from "@/lib/utils";
+import type { IUser } from "@/models/user.model";
 
 interface InputValues {
   id: string;
@@ -25,6 +26,7 @@ interface InputValues {
 
 type Props = {
   isOpen: boolean;
+  users: IUser[];
 
   todo?: ITodo;
   onClose: () => void;
@@ -53,7 +55,12 @@ function DialogTodo(props: Props) {
   };
 
   const handleOnSubmitForm = (values: InputValues) => {
+    setIsLoading(true);
     console.log({ values });
+
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
   };
 
   useEffect(() => {
@@ -69,7 +76,7 @@ function DialogTodo(props: Props) {
   }, [todo, isOpen]);
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleOnClose}>
+    <Dialog open={isOpen} onOpenChange={isLoading ? () => {} : handleOnClose}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{isUpdate ? "Update Todo" : "Add New Todo"}</DialogTitle>
@@ -138,13 +145,17 @@ function DialogTodo(props: Props) {
                       <SelectValue placeholder="select user" />
                     </SelectTrigger>
                     <SelectContent>
-                      {["1", "2", "3"].map((userId) => (
-                        <SelectItem key={userId} value={userId.toString()}>
-                          User {userId}
+                      {props.users.map((user, index) => (
+                        <SelectItem key={index} value={user.id.toString()}>
+                          User {user.id}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
+
+                  {touched.userId && errors.userId && (
+                    <p className="text-sm text-red-500">{errors.userId}</p>
+                  )}
                 </div>
 
                 <div className="flex items-center space-x-2">
@@ -166,8 +177,12 @@ function DialogTodo(props: Props) {
                   >
                     Cancel
                   </Button>
-                  <Button type="submit" disabled={false}>
-                    Add todo
+                  <Button type="submit" disabled={isLoading}>
+                    {isLoading
+                      ? "Processing ..."
+                      : todo
+                      ? "Save changes"
+                      : "Add todo"}
                   </Button>
                 </div>
               </div>

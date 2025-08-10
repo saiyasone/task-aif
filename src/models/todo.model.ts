@@ -6,6 +6,7 @@ export interface ITodo {
 }
 
 export interface ITodoInput {
+  id?: string;
   todo: string;
   userId: number;
   completed: boolean;
