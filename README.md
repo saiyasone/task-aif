@@ -62,6 +62,11 @@ npm install
 npm run dev
 ```
 
+### Optionals ( Docker and docker compose )
+```bash
+npm run docker:up
+```
+
 ## 🔧 Common Scripts
 
 | Command                   | Description                                       |
@@ -73,10 +78,6 @@ npm run dev
 | `npm run docker:up`       | docker-compose build                              |
 | `npm run docker:down`     | docker-compose down                               |
 
-### Optionals ( Docker and docker compose )
-```bash
-npm run docker:up
-```
 
 ## 🌐 Preview the website
 [Visit the AIF Task](https://task-aif.netlify.app)
