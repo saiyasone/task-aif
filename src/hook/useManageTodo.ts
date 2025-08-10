@@ -1,4 +1,4 @@
-import type { ITodo, TodoStateFilter } from "@/models/todo.model";
+import type { ITodo, ITodoInput, TodoStateFilter } from "@/models/todo.model";
 import { useEffect, useMemo, useState } from "react";
 
 import { API_ENDPOINT } from "@/main";
@@ -44,6 +44,34 @@ const useManageTodo = (props: Prop) => {
     handleOnFetchData();
   }, [limit, userId]);
 
+  const handleOnSaveData = (todo: ITodoInput) => {
+    setTodoItems((prev) => [
+      { ...todo, id: String(todoItems.length + 1) },
+      ...prev,
+    ]);
+  };
+
+  const handleOnChangeData = (todo: ITodoInput) => {
+    setTodoItems((prev) => {
+      return prev.map((item) =>
+        String(item.id) === String(todo.id) ? { ...item, ...todo } : item
+      );
+    });
+  };
+
+  const handleOnDelete = async (
+    id: string,
+    callback: (str: string, isErr: boolean) => void
+  ) => {
+    try {
+      const response = await todoApi.deleteTodo(id);
+      setTodoItems((prev) => prev.filter((item) => item.id !== response.id));
+      callback("Todo deleted successfully", false);
+    } catch (error: any) {
+      callback(error?.messsage || "Something went wrong", true);
+    }
+  };
+
   const data = useMemo(() => {
     if (todoItems && todoItems.length > 0) {
       let items: ITodo[] = [...todoItems];
@@ -80,18 +108,21 @@ const useManageTodo = (props: Prop) => {
 
   const total_status = useMemo(() => {
     if (data && data.length > 0) {
-      const completed = data.filter((item) => item.completed).length;
-      const pending = data.filter((item) => !item.completed).length;
+      const completed = data.filter((item) => item.completed).length || 0;
+      const pending = data.filter((item) => !item.completed).length || 0;
 
+      const total_update = completed + pending;
       return {
         completed,
         pending,
+        total_update,
       };
     }
 
     return {
       pending: 0,
       completed: 0,
+      total_update: 0,
     };
   }, [data]);
 
@@ -104,6 +135,11 @@ const useManageTodo = (props: Prop) => {
     isLoading,
     isError,
     isErrMsg,
+
+    handleOnFetchData,
+    handleOnSaveData,
+    handleOnChangeData,
+    handleOnDelete,
   };
 };
 

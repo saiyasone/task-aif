@@ -1,7 +1,7 @@
 import axios from "axios";
 import { API_ENDPOINT } from "@/main";
 import type { IApiTodoResponse } from "@/models/api-response.model";
-import type { ITodo, ITodoInput } from "@/models/todo.model";
+import type { ITodoInput } from "@/models/todo.model";
 
 export const todoApi = {
   async getAllTodos(url: string): Promise<IApiTodoResponse> {
@@ -11,20 +11,20 @@ export const todoApi = {
     return data;
   },
 
-  async createTodo(todoData: ITodoInput): Promise<ITodo> {
+  async createTodo(todoData: ITodoInput): Promise<ITodoInput> {
     const response = await axios.post(`${API_ENDPOINT}/todos/add`, todoData);
 
     return response.data;
   },
 
-  async updateTodo(id: number, updates: ITodoInput): Promise<ITodo> {
+  async updateTodo(id: string, updates: ITodoInput): Promise<ITodoInput> {
     const response = await axios.put(`${API_ENDPOINT}/todos/${id}`, updates);
 
     return response.data;
   },
 
-  async deleteTodo(id: number): Promise<{
-    id: number;
+  async deleteTodo(id: string): Promise<{
+    id: string;
   }> {
     const response = await axios.delete(`${API_ENDPOINT}/todos/${id}`, {});
     return response.data;

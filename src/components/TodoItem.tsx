@@ -8,10 +8,11 @@ import { Button } from "./ui/button";
 
 type Prop = {
   todo: ITodo;
+  isLoading?: boolean;
   onClick?: (action: string) => void;
 };
 function TodoItem(props: Prop) {
-  const { todo } = props;
+  const { todo, isLoading } = props;
 
   const menuOnClick = (action: string) => {
     props.onClick?.(action);
@@ -23,23 +24,25 @@ function TodoItem(props: Prop) {
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-start gap-3 flex-1">
             <Checkbox
+              id={`filter-${todo.id}`}
               checked={todo.completed}
+              disabled={isLoading || false}
               onCheckedChange={() => {
                 menuOnClick("filter");
               }}
-              disabled={false}
-              className="mt-1"
+              className="mt-1 cursor-pointer"
             />
 
             <div className="flex-1 space-y-2">
               <Fragment>
-                <p
-                  className={`text-sm leading-relaxed ${
+                <label
+                  htmlFor={`filter-${todo.id}`}
+                  className={`cursor-pointer text-sm leading-relaxed block ${
                     todo.completed ? "line-through text-muted-foreground" : ""
                   }`}
                 >
                   {todo.todo}
-                </p>
+                </label>
                 <div className="flex items-center gap-2">
                   <Badge
                     variant={"secondary"}
@@ -76,6 +79,7 @@ function TodoItem(props: Prop) {
                 menuOnClick("edit");
               }}
               disabled={false}
+              className="cursor-pointer"
             >
               <Edit2 className="w-4 h-4" />
             </Button>
@@ -86,7 +90,7 @@ function TodoItem(props: Prop) {
                 menuOnClick("delete");
               }}
               disabled={false}
-              className="text-destructive hover:text-destructive"
+              className="cursor-pointer text-red-500 hover:text-white hover:bg-red-500"
             >
               <Trash2 className="w-4 h-4" />
             </Button>

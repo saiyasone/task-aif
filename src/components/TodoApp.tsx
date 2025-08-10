@@ -10,9 +10,12 @@ import useFilter from "@/hook/useFilter";
 import TodoItemLoading from "./TodoItemLoading";
 import ErrorNetworking from "./ErrorNetworking";
 import useManageUser from "@/hook/useManageUser";
+import { toast } from "sonner";
+import { todoApi } from "@/service/api";
 
 const TodoApp = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isTodo, setIsTodo] = useState(false);
   const [dataForEvent, setDataForEvent] = useState<{
     data: ITodo | null;
     action: string;
@@ -33,13 +36,46 @@ const TodoApp = () => {
     });
   };
 
-  const menuOnClick = (action: string) => {
+  const handleOnUpdateFilter = async (todo: ITodo) => {
+    setIsTodo(true);
+    const item: ITodo = {
+      completed: !todo!.completed,
+      id: String(todo!.id),
+      todo: todo!.todo,
+      userId: todo!.userId,
+    };
+
+    try {
+      await todoApi.updateTodo(todo?.id || "", item!);
+
+      toast.success("Todo updated");
+      manageTodo.handleOnChangeData(item);
+    } catch (error: any) {
+      toast.error(error?.message || "Failed to update todo");
+    } finally {
+      handleResetDataEvent();
+      setIsTodo(false);
+    }
+  };
+
+  const menuOnClick = (data: ITodo, action: string) => {
     switch (action) {
       case "edit":
         handleIsOpen();
         break;
+      case "filter":
+        handleOnUpdateFilter(data);
+        break;
       case "delete":
-        // Handle delete action
+        manageTodo.handleOnDelete(dataForEvent.data!.id, (message, isErr) => {
+          if (isErr) {
+            toast.error(message);
+          } else {
+            toast.success(message);
+          }
+        });
+
+        handleResetDataEvent();
         break;
       default:
         break;
@@ -47,10 +83,10 @@ const TodoApp = () => {
   };
 
   useEffect(() => {
-    if (dataForEvent.action) {
-      menuOnClick(dataForEvent.action);
+    if (dataForEvent.action && dataForEvent.data) {
+      menuOnClick(dataForEvent.data, dataForEvent.action);
     }
-  }, [dataForEvent.action]);
+  }, [dataForEvent.action, dataForEvent.data]);
 
   return (
     <Fragment>
@@ -59,10 +95,17 @@ const TodoApp = () => {
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div className="flex gap-2 flex-col">
               <h1 className="text-3xl font-bold">AIF Task Management</h1>
-              <p className="text-muted-foreground">
-                {manageTodo.total} total • {manageTodo.total_status.completed}{" "}
-                completed • {manageTodo.total_status.pending} pending
-              </p>
+              <div className="flex gap-2 flex-wrap items-center">
+                <p className="text-muted-foreground">
+                  {manageTodo.total_status.total_update} total •{" "}
+                </p>
+                <p className="text-muted-foreground">
+                  {manageTodo.total_status.completed} completed •{" "}
+                </p>
+                <p className="text-muted-foreground">
+                  {manageTodo.total_status.pending} pending
+                </p>
+              </div>
             </div>
 
             <div>
@@ -90,6 +133,7 @@ const TodoApp = () => {
               {manageTodo.data.map((todo, index) => (
                 <TodoItem
                   key={index}
+                  isLoading={isTodo}
                   todo={todo}
                   onClick={(action: string) => {
                     setDataForEvent({
@@ -129,6 +173,16 @@ const TodoApp = () => {
       <DialogTodo
         users={manageUser.data}
         isOpen={isOpen}
+        onSuccess={(todo, val) => {
+          handleIsOpen();
+          handleResetDataEvent();
+
+          if (val) {
+            manageTodo.handleOnChangeData(todo);
+          } else {
+            manageTodo.handleOnSaveData(todo);
+          }
+        }}
         onClose={() => {
           handleIsOpen();
           handleResetDataEvent();

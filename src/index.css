@@ -127,3 +127,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+.toast-text-black {
+  color: var(--color-black) !important;
+}

@@ -1,4 +1,4 @@
-import type { ITodo } from "@/models/todo.model";
+import type { ITodo, ITodoInput } from "@/models/todo.model";
 import React, { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import { Button } from "./ui/button";
@@ -16,9 +16,11 @@ import {
 import { Input } from "./ui/input";
 import { cn } from "@/lib/utils";
 import type { IUser } from "@/models/user.model";
+import { toast } from "sonner";
+import { todoApi } from "@/service/api";
 
 interface InputValues {
-  id: string;
+  id?: string;
   todo: string;
   userId: string;
   completed: boolean;
@@ -29,6 +31,8 @@ type Props = {
   users: IUser[];
 
   todo?: ITodo;
+
+  onSuccess?: (todo: ITodoInput, isUpdate: boolean) => void;
   onClose: () => void;
 };
 function DialogTodo(props: Props) {
@@ -36,9 +40,9 @@ function DialogTodo(props: Props) {
   const formikRef = React.useRef<FormikProps<InputValues>>(null);
   const [dataForEvent, setDataForEvent] = useState<InputValues | null>({
     completed: false,
-    id: "0",
+    id: "",
     todo: "",
-    userId: "0",
+    userId: "",
   });
   const [isUpdate, setIsUpdate] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -54,13 +58,43 @@ function DialogTodo(props: Props) {
     onClose();
   };
 
-  const handleOnSubmitForm = (values: InputValues) => {
+  const handleOnSubmitForm = async (values: InputValues) => {
     setIsLoading(true);
-    console.log({ values });
 
-    setTimeout(() => {
+    const input: ITodoInput = {
+      ...values,
+      id: dataForEvent?.id || "",
+    };
+
+    try {
+      let newTodo: ITodoInput = {
+        completed: false,
+        id: "",
+        todo: "",
+        userId: "",
+      };
+      if (isUpdate) {
+        const response = await todoApi.updateTodo(
+          dataForEvent?.id || "",
+          input
+        );
+        newTodo = { ...response };
+        props.onSuccess?.(newTodo, true);
+      } else {
+        const response = await todoApi.createTodo(input);
+        newTodo = { ...response };
+        props.onSuccess?.(newTodo, false);
+      }
+    } catch (error: any) {
+      toast.error(error?.message || "Something went wrong");
+    } finally {
       setIsLoading(false);
-    }, 3000);
+      if (isUpdate) {
+        toast.success("Todo was changes");
+      } else {
+        toast.success("Todo created");
+      }
+    }
   };
 
   useEffect(() => {
@@ -177,7 +211,11 @@ function DialogTodo(props: Props) {
                   >
                     Cancel
                   </Button>
-                  <Button type="submit" disabled={isLoading}>
+                  <Button
+                    className="cursor-pointer"
+                    type="submit"
+                    disabled={isLoading}
+                  >
                     {isLoading
                       ? "Processing ..."
                       : todo

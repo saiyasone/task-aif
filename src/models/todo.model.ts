@@ -1,14 +1,14 @@
 export interface ITodo {
-  id: number;
+  id: string;
   todo: string;
   completed: boolean;
-  userId: number;
+  userId: string;
 }
 
 export interface ITodoInput {
   id?: string;
   todo: string;
-  userId: number;
+  userId: string;
   completed: boolean;
 }
 
