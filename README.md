@@ -70,8 +70,13 @@ npm run dev
 | `npm run build`           | Build the frontend project                        |  
 | `npm run preview`         | Preview website after build                       |
 | `npm run ui:add`          | Add ui from shadcn ui                             |
-| `npm run docker:up`       | docker compose build                              |
-| `npm run docker:down`     | docker compose down                               |
+| `npm run docker:up`       | docker-compose build                              |
+| `npm run docker:down`     | docker-compose down                               |
+
+### Optionals ( Docker and docker compose )
+```bash
+npm run docker:up
+```
 
 ## 🌐 Preview the website
 [Visit the AIF Task](https://task-aif.netlify.app)
