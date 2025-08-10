@@ -62,6 +62,9 @@ npm install
 | `npm run preview`         | Preview website after build                       |
 | `npm run ui:add`          | Add ui from shadcn ui                             |
 
+## 🌐 Preview the website
+[Visit my website](https://task-aif.netlify.app)
+
 ## 📄 License
 
 This project is licensed under the **MIT License**. You are free to use, modify, and distribute with proper attribution.
