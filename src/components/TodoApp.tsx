@@ -1,4 +1,4 @@
-import { act, Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import TodoItem from "./TodoItem";
 import TodoFilter from "./TodoFilter";
 import { Button } from "./ui/button";
