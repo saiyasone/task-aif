@@ -44,13 +44,22 @@ Nodejs v20++
 
 ```bash
 git clone https://github.com/saiyasone/task-aif.git
+```
+
+### Step 2: Access folders in project
+``` bas
 cd task-aif
 ```
 
-### Step 2: Install dependencies
+### Step 3: Install dependencies
 
 ```bash
 npm install
+```
+### Step 4: Run project
+
+```bash
+npm run dev
 ```
 
 ## 🔧 Common Scripts
