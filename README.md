@@ -63,7 +63,7 @@ npm install
 | `npm run ui:add`          | Add ui from shadcn ui                             |
 
 ## 🌐 Preview the website
-[Visit my website](https://task-aif.netlify.app)
+[Visit the AIF Task](https://task-aif.netlify.app)
 
 ## 📄 License
 
