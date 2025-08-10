@@ -50,7 +50,7 @@ npm install
 ## 🔧 Common Scripts
 
 | Command                   | Description                                       |
-|--------------------------------------------------------------------           |
+| ------------------------- | ------------------------------------------------- |
 | `npm run dev`             | Run the frontend in development mode              |
 | `npm run build`           | Build the frontend project                        |  
 | `npm run preview`         | Preview website after build                       |
