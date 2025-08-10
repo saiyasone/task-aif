@@ -1,4 +1,4 @@
-# AIF Task Management 
+# AIF Task Management 🎯
 
 **Task Management** is the process of planning, organizing, tracking, and completing tasks efficiently to achieve specific goals.
 
@@ -49,9 +49,13 @@ npm install
 
 ## 🔧 Common Scripts
 
-| Command                   | Description                
-|--------------------------------------------------------------------|
-| `npm run dev`             | Run the frontend in development mode   |
-| `npm run build`           | Build the frontend project             |  
-| `npm run preview`         | Preview website after build            |
-| `npm run ui:add`          | Add ui from shadcn ui                  |
+| Command                   | Description                                       |
+|--------------------------------------------------------------------           |
+| `npm run dev`             | Run the frontend in development mode              |
+| `npm run build`           | Build the frontend project                        |  
+| `npm run preview`         | Preview website after build                       |
+| `npm run ui:add`          | Add ui from shadcn ui                             |
+
+## 📄 License
+
+This project is licensed under the **MIT License**. You are free to use, modify, and distribute with proper attribution.
