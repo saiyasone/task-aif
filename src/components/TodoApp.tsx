@@ -58,14 +58,14 @@ const TodoApp = () => {
     }
   };
 
-  const handleOnFetchDataById = async (id: string, action: string) => {
+  const handleOnFetchDataById = async (todo: ITodo, action: string) => {
     try {
-      const response = await todoApi.getTodo(id);
-      console.log(response);
+      const response = await todoApi.getTodo(todo.id);
+      // response it cannt get real data from dummyjson api
 
       setDataForEvent({
         action,
-        data: response,
+        data: todo,
       });
     } catch (error: any) {
       toast.error(error?.message || "Failed to fetch todo by ID");
@@ -150,7 +150,7 @@ const TodoApp = () => {
                   isLoading={isTodo}
                   todo={todo}
                   onClick={(action: string) => {
-                    handleOnFetchDataById(todo.id, action);
+                    handleOnFetchDataById(todo, action);
                   }}
                 />
               ))}

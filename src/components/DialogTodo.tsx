@@ -200,8 +200,11 @@ function DialogTodo(props: Props) {
                     onCheckedChange={(checked) => {
                       setFieldValue("completed", checked);
                     }}
+                    className="cursor-pointer"
                   />
-                  <Label htmlFor="completed">Mark as completed</Label>
+                  <Label className="cursor-pointer" htmlFor="completed">
+                    Mark as completed
+                  </Label>
                 </div>
                 <div className="flex justify-end space-x-2">
                   <Button
