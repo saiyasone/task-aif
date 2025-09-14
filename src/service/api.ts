@@ -1,7 +1,7 @@
-import axios from "axios";
 import { API_ENDPOINT } from "@/main";
 import type { IApiTodoResponse } from "@/models/api-response.model";
 import type { ITodo, ITodoInput } from "@/models/todo.model";
+import axios from "axios";
 
 export const todoApi = {
   async getAllTodos(url: string): Promise<IApiTodoResponse> {
