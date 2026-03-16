@@ -1,0 +1,31 @@
+name: CI/CD - PROD
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: [self-hosted, aif-task]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Debug docker access
+        run: |
+          whoami
+          groups
+          docker ps
+
+      - name: set up .env file
+        run: |
+          # Create a .env file with the required variables
+          echo "${{ secrets.ENV_PRODUCTION }}" > .env
+          chmod 600 .env
+
+      - name: Build and run Docker Compose
+        run: |
+          # Build and run the Docker Compose services
+          docker compose up --build -d prod
+          docker image prune -f
