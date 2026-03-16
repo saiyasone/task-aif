@@ -27,5 +27,5 @@ jobs:
       - name: Build and run Docker Compose
         run: |
           # Build and run the Docker Compose services
-          docker compose up --build -d dev
+          docker compose up --build -d
           docker image prune -f
