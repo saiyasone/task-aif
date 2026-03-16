@@ -1,14 +1,16 @@
 version: "3.8"
 
 services:
-  dev:
+  app:
     build: .
-    container_name: aif-task-dev
+    container_name: aif-task-production
     restart: unless-stopped
     ports:
       - "5173:4173"
-
-    env_file:
-      - .env
-
-    command: npm run start
+    environment:
+      - NODE_ENV=production
+    # Removed env_file since .env doesn't exist
+    # Add back if .env file is created later:
+    # env_file:
+    #   - .env
+    command: npm run preview
